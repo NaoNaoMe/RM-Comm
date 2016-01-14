@@ -1,5 +1,10 @@
-#include	"rm_comm.h"
+//******************************************************************************
+// RmComm
+// Version 1.0.0
+// Copyright 2016 NaoNaoMe
+//******************************************************************************
 
+#include	"RmComm.h"
 
 /*-- begin:	definitions --*/
 #define	RM_LOG_FACTOR_MAX		32
@@ -1295,7 +1300,6 @@ static	uint8_t		u08_SndSLIPEscChar;
 static	uint8_t		u08_SndSLIPLastChar;
 
 	uint8_t*	pu08_char;
-	uint8_t		u08_size;
 
 	pu08_char = RM_RET_NULL;
 
