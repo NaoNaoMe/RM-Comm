@@ -1,6 +1,6 @@
 //******************************************************************************
 // RmComm
-// Version 1.0.0
+// Version 1.0.1
 // Copyright 2016 NaoNaoMe
 //******************************************************************************
 
@@ -131,8 +131,8 @@ static	uint16_t	GetReceiveFrame( uint8_t u08_tmp[], uint8_t *u08_rcv_index );
 /*-- begin:	functions --*/
 
 /**
-  * @brief  Main structure of RM comunication.
-  * call this each timing(millie secound) which defined "RM_BASE_CYCLE"
+  * @brief  Main structure of RM communication.
+  * @note   This fuction must periodically be called by timebase defined by "RM_BASE_CYCLE".
   * @param  None
   * @retval None
   */
@@ -361,10 +361,10 @@ static	uint8_t		u08_CommPayloadSize;
 
 
 /**
-  * @brief  Configure interval transmitting timming.
-  * @param  u08_mode "RM state"
-  * @param  u08_trg transmitting request
-  * @retval assert transmitting
+  * @brief  Configure interval transmitting timing.
+  * @param  u08_mode: RM state
+  *         u08_trg: Transmitting trigger
+  * @retval Assert transmitting.
   */
 static	uint8_t		CtrlSendTiming( uint8_t u08_mode, uint8_t u08_trg )
 {
@@ -442,10 +442,10 @@ static	uint8_t		CtrlSendTiming( uint8_t u08_mode, uint8_t u08_trg )
 
 
 /**
-  * @brief  Start interval data transmission
-  * @param  u08_tmp[] Frame payload array
-  * @param  u08_payloadsize Frame payload size
-  * @retval status
+  * @brief  Start interval data transmission.
+  * @param  u08_tmp[]: Frame payload array
+  *         u08_payloadsize: Frame payload size
+  * @retval Status
   */
 static	uint16_t	SetLogStart( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 {
@@ -468,10 +468,10 @@ static	uint16_t	SetLogStart( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 
 
 /**
-  * @brief  Stop interval data transmission
-  * @param  u08_tmp[] Frame payload array
-  * @param  u08_payloadsize Frame payload size
-  * @retval status
+  * @brief  Stop interval data transmission.
+  * @param  u08_tmp[]: Frame payload array
+  *         u08_payloadsize: Frame payload size
+  * @retval Status
   */
 static	uint16_t	SetLogStop( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 {
@@ -494,10 +494,10 @@ static	uint16_t	SetLogStop( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 
 
 /**
-  * @brief  Configure interval data transmission timming
-  * @param  u08_tmp[] Frame payload array
-  * @param  u08_payloadsize Frame payload size
-  * @retval status
+  * @brief  Configure interval data transmission timming.
+  * @param  u08_tmp[]: Frame payload array
+  *         u08_payloadsize: Frame payload size
+  * @retval Status
   */
 static	uint16_t	SetTiming( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 {
@@ -531,10 +531,10 @@ static	uint16_t	SetTiming( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 
 
 /**
-  * @brief  Write data to specified RAM Address
-  * @param  u08_tmp[] Frame payload array
-  * @param  u08_payloadsize Frame payload size
-  * @retval status
+  * @brief  Write data to specified RAM Address.
+  * @param  u08_tmp[]: Frame payload array
+  *         u08_payloadsize: Frame payload size
+  * @retval Status
   */
 static	uint16_t	WriteData( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 {
@@ -670,10 +670,10 @@ static	const	uint8_t		u08_RM_ValidWrValTable[TABLE_SIZE] =
 
 
 /**
-  * @brief  Set Address data and Size data in using LOG_MODE.
-  * @param  u08_tmp[] Frame payload array
-  * @param  u08_payloadsize Frame payload size
-  * @retval status
+  * @brief  Set Address and Size on LOG_MODE state.
+  * @param  u08_tmp[]: Frame payload array
+  *         u08_payloadsize: Frame payload size
+  * @retval Status
   */
 static	uint16_t	SetLogData( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 {
@@ -848,10 +848,10 @@ static	const	uint8_t		u08_RM_ValidLengthTable[TABLE_SIZE] =
 
 
 /**
-  * @brief  To get DUT Condition(Ex. Version strings) with checking Password.
-  * @param  u08_tmp[] Frame payload array
-  * @param  u08_payloadsize Frame payload size
-  * @retval status
+  * @brief  Get DUT Condition(Ex. Version strings) with checking Password.
+  * @param  u08_tmp[]: Frame payload array
+  *         u08_payloadsize: Frame payload size
+  * @retval Status
   */
 static	uint16_t	RequestDUTCondition( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 {
@@ -900,10 +900,10 @@ static	uint16_t	RequestDUTCondition( uint8_t u08_tmp[], uint8_t u08_payloadsize 
 
 
 /**
-  * @brief  To get specified data length from specified RAM Address
-  * @param  u08_tmp[] Frame payload array
-  * @param  u08_payloadsize Frame payload size
-  * @retval status
+  * @brief  Get specified data length from specified RAM Address.
+  * @param  u08_tmp[]: Frame payload array
+  *         u08_payloadsize: Frame payload size
+  * @retval Status
   */
 static	uint16_t	SetDumpData( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 {
@@ -962,10 +962,10 @@ static	uint16_t	SetDumpData( uint8_t u08_tmp[], uint8_t u08_payloadsize )
 
 
 /**
-  * @brief  store a payload from specified address and size based on "SetLogData" function.
-  * @param  u08_tmp[] Frame payload array
-  * @param  u08_payloadsize Frame payload size
-  * @retval status
+  * @brief  Make a payload using address and size defined by SetLogData function.
+  * @param  u08_tmp[]: Frame payload array
+  *         u08_payloadsize: Frame payload size
+  * @retval Status
   */
 static	uint16_t	GetLogData( uint8_t u08_tmp[], uint8_t *u08_frame_size )
 {
@@ -1086,10 +1086,10 @@ static	uint16_t	GetLogData( uint8_t u08_tmp[], uint8_t *u08_frame_size )
 
 
 /**
-  * @brief  store a payload from specified address and length
-  * @param  u08_tmp[] Frame payload array
-  * @param  u08_payloadsize Frame payload size
-  * @retval status
+  * @brief  Make a payload using address and data length defined by SetDumpData function.
+  * @param  u08_tmp[]: Frame payload array
+  *         u08_payloadsize: Frame payload size
+  * @retval Status
   */
 static	uint16_t	GetBlockData( uint8_t u08_tmp[], uint8_t *u08_frame_size )
 {
@@ -1144,10 +1144,10 @@ static	uint16_t	GetBlockData( uint8_t u08_tmp[], uint8_t *u08_frame_size )
 
 
 /**
-  * @brief  calculate CRC8 from byte buffer.
-  * @param  u08_buff[] buffer array
-  * @param  u08_buff_size buffer size
-  * @retval status
+  * @brief  Calculate CRC8 from buffer array.
+  * @param  u08_buff[]: Buffer array
+  *         u08_buff_size: Buffer size
+  * @retval CRC Value
   */
 static	uint8_t		GetCRC( uint8_t u08_buff[], uint8_t u08_buff_size )
 {
@@ -1193,10 +1193,10 @@ static	const	uint8_t		u08_RM_CrcTable[256] =
 
 
 /**
-  * @brief  check
-  * @param  u08_buff[] buffer array
-  * @param  u08_buff_size buffer size
-  * @retval status
+  * @brief  Check whether this access is permitted.
+  * @param  u08_size: Size
+  *         var_address: Address
+  * @retval Status
   */
 #ifdef	RM_ADDRESS_4BYTE
 static	uint16_t	CheckSizeAndAddress( uint8_t u08_size, uint32_t var_address )
@@ -1233,6 +1233,12 @@ static	uint16_t	CheckSizeAndAddress( uint8_t u08_size, uint16_t var_address )
 }
 
 
+/**
+  * @brief  Initilize RM Comm.
+  * @param  u08_tmp[]: Version strings
+  *         u08_buff_size: Version data length
+  * @retval None
+  */
 void	RM_Initial( uint8_t u08_tmp[], uint8_t u08_buff_size )
 {
 #ifdef	RM_ADDRESS_4BYTE
@@ -1272,6 +1278,11 @@ void	RM_Initial( uint8_t u08_tmp[], uint8_t u08_buff_size )
 }
 
 
+/**
+  * @brief  Return headder of transmitting frame if frame is ready.
+  * @param  None
+  * @retval Pointer of frame headder
+  */
 uint8_t*	RM_GetSendSoFrame( void )
 {
 	uint8_t*	pu08_char;
@@ -1292,6 +1303,11 @@ uint8_t*	RM_GetSendSoFrame( void )
 }
 
 
+/**
+  * @brief  Return data of transmitting frame.
+  * @param  None
+  * @retval Pointer of frame data
+  */
 uint8_t*	RM_GetSendFrame( void )
 {
 static	uint8_t		u08_SndSLIPTmpData;
@@ -1379,6 +1395,11 @@ static	uint8_t		u08_SndSLIPLastChar;
 }
 
 
+/**
+  * @brief  Store data to temporary recieve buffer.
+  * @param  u08_char: recieved data
+  * @retval Status
+  */
 uint16_t	RM_PutReceiveBuff( uint8_t u08_char )
 {
 	uint16_t	u16_return_val;
@@ -1397,6 +1418,12 @@ uint16_t	RM_PutReceiveBuff( uint8_t u08_char )
 }
 
 
+/**
+  * @brief  Get decoded recieve frame.
+  * @param  u08_tmp[]: Decoded frame buffer
+  *         *u08_rcv_index: Decoded frame length
+  * @retval Status
+  */
 static	uint16_t	GetReceiveFrame( uint8_t u08_tmp[], uint8_t *u08_rcv_index )
 {
 static	uint8_t		u08_RcvSLIPLastChar;
@@ -1562,9 +1589,11 @@ static	uint8_t		u08_RcvSLIPLastChar;
 }
 
 
-/*SS
-void	RM_isLogMode( void )
-EE*/
+/**
+  * @brief  Is RM Comm active?
+  * @param  None
+  * @retval True or false.
+  */
 static	uint8_t		RM_isLogMode( void )
 {
 	if( u08_RM_CommMode == RM_LOG_MODE )
