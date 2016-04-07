@@ -1,15 +1,13 @@
-# RM-Comm
-Serial Communication driver for [RM Classic](https://github.com/NaoNaoMe/RM-Classic).
+# RM Comm
+Serial Communication library for [RM Classic](https://github.com/NaoNaoMe/RM-Classic).
 
-#How to use
-Click "Download ZIP" in this page.
-Open the Arduino IDE and navigate to: Sketch > Include Library > Add .ZIP Libraries and 
-import downloaded "RM-Comm.zip".
-This library has an Arduino example. Open the File > Examples > RmComm > RmSample.
-
-[RM Classic](https://github.com/NaoNaoMe/RM-Classic) need a ViewSetting file.
-This library alseo has a ViewSetting example
-You can find out "\Arduino\libraries\RM-Comm-master\ViewSetting Sample\ViewSetting_TgVRmSample_StV001.xml"
+# How to implement RM Comm library
+This introduction is how to implement RM Comm library to Arduino Uno.
+- Download zip file from this repository.
+- Open Arduino IDE and navigate to: Sketch > Include Library > Add .ZIP Libraries and import downloaded zip file.
+ - This library has an example sketch, which navigate to: File > Examples > RmComm > RmSample.
+ - This example sketch needs to implement MsTimer2 library.
+- Upload RmSample to your Arduino board, your Arduino is ready to communicate with [RM Classic](https://github.com/NaoNaoMe/RM-Classic).
 
 ## License
 MIT
