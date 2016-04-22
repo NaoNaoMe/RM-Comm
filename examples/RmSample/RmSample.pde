@@ -1,6 +1,9 @@
-#include <MsTimer2.h>	//MsTimer2 Library
+#include <MsTimer2.h>  //MsTimer2 Library
 
 #include <RmComm.h>
+
+#define LED_PIN 3
+#define SW_PIN 4
 
 char VersionInfo[] = "RmSample";
 
@@ -8,6 +11,9 @@ boolean rmTrg = false;
 
 boolean cntFlg = false;
 int count = 0;
+boolean ctrlFlg = true;
+int debounceCount = 0;
+boolean ledEmitFlg = false;
 
 void timerFire() {
   rmTrg = true;
@@ -15,6 +21,9 @@ void timerFire() {
 }
 
 void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(SW_PIN, INPUT);
+  
   // initialize serial:
   Serial.begin(9600);
 
@@ -23,6 +32,7 @@ void setup() {
   MsTimer2::set(5, timerFire);
   MsTimer2::start();
   
+  digitalWrite(LED_PIN, HIGH);
 }
 
 void loop() {
@@ -35,6 +45,35 @@ void loop() {
     {
       count++;
     
+    }
+
+    if( ctrlFlg == true )
+    {
+      int inPin = digitalRead(SW_PIN);
+     
+      if (inPin == LOW)
+      {
+        debounceCount++;
+        if( debounceCount > 200 )
+        {
+          debounceCount = 200;
+          ledEmitFlg = true;
+        }
+      }
+      else
+      {
+        debounceCount = 0;
+        ledEmitFlg = false;
+      }
+    }
+
+    if( ledEmitFlg == true )
+    {
+      digitalWrite(LED_PIN, LOW);
+    }
+    else
+    {
+      digitalWrite(LED_PIN, HIGH);
     }
 
     serialRxEvent();
@@ -59,24 +98,10 @@ void serialRxEvent() {
 void serialTxEvent() {
     uint8_t *psndChar = RM_GetSendSoFrame();
     
-    int i = 0;
-    uint8_t sndBuff[256];
     while( psndChar != RM_RET_NULL )
     {
-      sndBuff[i] = *psndChar;
-      i++;
-      
+      Serial.write(*psndChar);
       psndChar = RM_GetSendFrame();
-      
-      if( psndChar == RM_RET_NULL )
-      {
-        Serial.write(sndBuff, i);
-        break;
-        
-      }
       
     }
 }
-
-
-

@@ -1,6 +1,6 @@
 //******************************************************************************
 // RmComm
-// Version 1.0.1
+// Version 1.0.2
 // Copyright 2016 NaoNaoMe
 //******************************************************************************
 
@@ -124,7 +124,6 @@ static	uint16_t	CheckSizeAndAddress( uint8_t u08_size, uint32_t var_address );
 static	uint16_t	CheckSizeAndAddress( uint8_t u08_size, uint16_t var_address );
 #endif
 
-static	uint16_t	PutSendBuff( uint8_t u08_char );
 static	uint16_t	GetReceiveFrame( uint8_t u08_tmp[], uint8_t *u08_rcv_index );
 
 
@@ -589,7 +588,7 @@ static	const	uint8_t		u08_RM_ValidWrValTable[TABLE_SIZE] =
 		if( (u08_size != 0) &&
 			(u08_size == u08_RM_ValidWrValTable[(u08_payloadsize - 1)]) )
 		{
-			/* u08_tmp(recieved data) is stored as LSB first  */
+			/* u08_tmp(received data) is stored as LSB first  */
 #ifdef	RM_ADDRESS_4BYTE
 			var_address  = (uint32_t)u08_tmp[4];
 			var_address  = var_address << 8;
@@ -623,7 +622,7 @@ static	const	uint8_t		u08_RM_ValidWrValTable[TABLE_SIZE] =
 				break;
 
 			case 2:
-				/* u08_tmp(recieved data) is stored as LSB first  */
+				/* u08_tmp(received data) is stored as LSB first  */
 				u16_buff  = (uint16_t)u08_tmp[u16_index+1];
 				u16_buff  = u16_buff << 8;
 				u16_buff |= (uint16_t)u08_tmp[u16_index];
@@ -634,7 +633,7 @@ static	const	uint8_t		u08_RM_ValidWrValTable[TABLE_SIZE] =
 				break;
 
 			case 4:
-				/* u08_tmp(recieved data) is stored as LSB first  */
+				/* u08_tmp(received data) is stored as LSB first  */
 				u32_buff  = (uint32_t)u08_tmp[u16_index+3];
 				u32_buff  = u32_buff << 8;
 				u32_buff |= (uint32_t)u08_tmp[u16_index+2];
@@ -785,7 +784,7 @@ static	const	uint8_t		u08_RM_ValidLengthTable[TABLE_SIZE] =
 					u16_base_index = u16_index * DATA_UNIT_NUM;
 
 #ifdef	RM_ADDRESS_4BYTE
-					/* u08_tmp(recieved data) is stored as LSB first  */
+					/* u08_tmp(received data) is stored as LSB first  */
 					var_address  = (uint32_t)u08_tmp[1+u16_base_index+4];
 					var_address  = var_address << 8;
 					var_address |= (uint32_t)u08_tmp[1+u16_base_index+3];
@@ -798,7 +797,7 @@ static	const	uint8_t		u08_RM_ValidLengthTable[TABLE_SIZE] =
 					u32_RM_AddressArray[u16_log_index+u16_index] = var_address;
 
 #else
-					/* u08_tmp(recieved data) is stored as LSB first  */
+					/* u08_tmp(received data) is stored as LSB first  */
 					var_address  = (uint16_t)u08_tmp[1+u16_base_index+2];
 					var_address  = var_address << 8;
 					var_address |= (uint16_t)u08_tmp[1+u16_base_index+1];
@@ -1005,7 +1004,7 @@ static	uint16_t	GetLogData( uint8_t u08_tmp[], uint8_t *u08_frame_size )
 
 	}
 
-	for( u16_index = 0; u16_index < u08_RM_ValidSize; u16_index++ )
+	for( u16_index = 0; u16_index < (uint16_t)u08_RM_ValidSize; u16_index++ )
 	{
 #ifdef	RM_ADDRESS_4BYTE
 		var_address = u32_RM_AddressArray[u16_index];
@@ -1117,7 +1116,7 @@ static	uint16_t	GetBlockData( uint8_t u08_tmp[], uint8_t *u08_frame_size )
 
 	pu08_addr = (uint8_t *)var_address;
 
-	for( u16_index = 0; u16_index < (uint8_t)u08_RM_DumpLentgh; u16_index++ )
+	for( u16_index = 0; u16_index < (uint16_t)u08_RM_DumpLentgh; u16_index++ )
 	{
 		u08_buff = *pu08_addr;
 
@@ -1396,8 +1395,8 @@ static	uint8_t		u08_SndSLIPLastChar;
 
 
 /**
-  * @brief  Store data to temporary recieve buffer.
-  * @param  u08_char: recieved data
+  * @brief  Store data to temporary receive buffer.
+  * @param  u08_char: received data
   * @retval Status
   */
 uint16_t	RM_PutReceiveBuff( uint8_t u08_char )
@@ -1419,7 +1418,7 @@ uint16_t	RM_PutReceiveBuff( uint8_t u08_char )
 
 
 /**
-  * @brief  Get decoded recieve frame.
+  * @brief  Get decoded receive frame.
   * @param  u08_tmp[]: Decoded frame buffer
   *         *u08_rcv_index: Decoded frame length
   * @retval Status
