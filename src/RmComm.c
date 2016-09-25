@@ -1,6 +1,6 @@
 //******************************************************************************
 // RmComm
-// Version 1.0.2
+// Version 1.0.3
 // Copyright 2016 NaoNaoMe
 //******************************************************************************
 
@@ -118,12 +118,6 @@ static	uint16_t	SetDumpData( uint8_t u08_tmp[], uint8_t u08_payloadsize );
 static	uint16_t	GetLogData( uint8_t u08_tmp[], uint8_t *u08_frame_size );
 static	uint16_t	GetBlockData( uint8_t u08_tmp[], uint8_t *u08_frame_size );
 static	uint8_t		GetCRC( uint8_t u08_tmp[], uint8_t u08_buff_size );
-#ifdef	RM_ADDRESS_4BYTE
-static	uint16_t	CheckSizeAndAddress( uint8_t u08_size, uint32_t var_address );
-#else
-static	uint16_t	CheckSizeAndAddress( uint8_t u08_size, uint16_t var_address );
-#endif
-
 static	uint16_t	GetReceiveFrame( uint8_t u08_tmp[], uint8_t *u08_rcv_index );
 
 
@@ -278,6 +272,7 @@ static	uint8_t		u08_CommPayloadSize;
 
 	}
 
+	u08_trg = CtrlSendTiming( u08_RM_CommMode, u08_trg );
 
 	if( u08_RM_DelayedTrg == RM_TRUE )
 	{
@@ -285,12 +280,6 @@ static	uint8_t		u08_CommPayloadSize;
 		u08_trg = RM_TRUE;
 
 	}
-	else
-	{
-		u08_trg = CtrlSendTiming( u08_RM_CommMode, u08_trg );
-
-	}
-
 
 	if( u08_RM_SndSLIPActiveFlg == RM_FALSE )
 	{
@@ -682,7 +671,7 @@ static	uint8_t		u08_LogBaseIndex;
 
 #ifdef	RM_ADDRESS_4BYTE
 #define	TABLE_SIZE			21
-#define	MAX_LOGBASE_INDEX	7
+#define	MAX_LOGBASE_INDEX	8
 #define	LOG_INDEX_OFFSET	4
 #define	DATA_UNIT_NUM		5	/* size(1)+address(4) = 5 */
 static	const	uint8_t		u08_RM_ValidLengthTable[TABLE_SIZE] =
@@ -696,7 +685,7 @@ static	const	uint8_t		u08_RM_ValidLengthTable[TABLE_SIZE] =
 
 #else
 #define	TABLE_SIZE			25
-#define	MAX_LOGBASE_INDEX	3
+#define	MAX_LOGBASE_INDEX	4
 #define	LOG_INDEX_OFFSET	8
 #define	DATA_UNIT_NUM		3	/* size(1)+address(2) = 3 */
 static	const	uint8_t		u08_RM_ValidLengthTable[TABLE_SIZE] =
@@ -747,7 +736,7 @@ static	const	uint8_t		u08_RM_ValidLengthTable[TABLE_SIZE] =
 		{
 			u08_state_flg = u08_tmp[0] & SETLOG_BIT_MASK;
 
-			/* begin */
+			/* Detect Start of SetLogDataFrame */
 			if( (u08_state_flg & SETLOG_START_BIT ) == SETLOG_START_BIT )
 			{
 				u08_RM_ValidSize = 0;
@@ -758,29 +747,24 @@ static	const	uint8_t		u08_RM_ValidLengthTable[TABLE_SIZE] =
 
 			}
 
+			if( u08_LogBaseIndex >= MAX_LOGBASE_INDEX )
+			{
+				u08_LogBaseIndex = MAX_LOGBASE_INDEX;
+
+				u08_SetLogErrFlg = RM_TRUE;
+
+				u16_return_val = RM_STATUS_ERR;
+
+			}
 
 			if( (u08_RM_ValidSize == 0 ) &&
 				(u08_SetLogErrFlg != RM_TRUE ) )
 			{
+				u16_log_index = (uint16_t)u08_LogBaseIndex;
+				u16_log_index = u16_log_index * LOG_INDEX_OFFSET;
+
 				for( u16_index = 0; u16_index < (uint16_t)u08_max_index; u16_index++ )
 				{
-					if( u08_LogBaseIndex > MAX_LOGBASE_INDEX )
-					{
-						u08_LogBaseIndex = MAX_LOGBASE_INDEX;
-
-						u08_SetLogErrFlg = RM_TRUE;
-
-						u16_return_val = RM_STATUS_ERR;
-						break;
-
-					}
-					else
-					{
-						u16_log_index = (uint16_t)u08_LogBaseIndex;
-						u16_log_index = u16_log_index * LOG_INDEX_OFFSET;
-
-					}
-
 					u16_base_index = u16_index * DATA_UNIT_NUM;
 
 #ifdef	RM_ADDRESS_4BYTE
@@ -814,7 +798,7 @@ static	const	uint8_t		u08_RM_ValidLengthTable[TABLE_SIZE] =
 
 			u08_LogBaseIndex++;
 
-			/* end */
+			/* Detect End of SetLogDataFrame */
 			if( ( (u08_state_flg & SETLOG_END_BIT ) == SETLOG_END_BIT ) &&
 				  (u08_SetLogErrFlg != RM_TRUE ) )
 			{
@@ -1187,47 +1171,6 @@ static	const	uint8_t		u08_RM_CrcTable[256] =
 	}
 
 	return( u08_crc );
-
-}
-
-
-/**
-  * @brief  Check whether this access is permitted.
-  * @param  u08_size: Size
-  *         var_address: Address
-  * @retval Status
-  */
-#ifdef	RM_ADDRESS_4BYTE
-static	uint16_t	CheckSizeAndAddress( uint8_t u08_size, uint32_t var_address )
-#else
-static	uint16_t	CheckSizeAndAddress( uint8_t u08_size, uint16_t var_address )
-#endif
-{
-	uint16_t	u16_return_val;
-
-	u16_return_val = RM_STATUS_SUCCESS;
-
-	if( (u08_size != 1) &&
-		(u08_size != 2) &&
-		(u08_size != 4) )
-	{
-		u16_return_val = RM_STATUS_ERR;
-
-	}
-	else if( (u08_size != 1) &&
-			((var_address & 0x01) == 0x01) )
-	{
-#ifndef	RM_ADDRESS_1BYTE
-		u16_return_val = RM_STATUS_ERR;
-#endif
-
-	}
-	else
-	{
-
-	}
-
-	return( u16_return_val );
 
 }
 

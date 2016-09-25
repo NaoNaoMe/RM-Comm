@@ -1,5 +1,3 @@
-#include <MsTimer2.h>  //MsTimer2 Library
-
 #include <RmComm.h>
 
 #define LED_PIN 3
@@ -7,18 +5,15 @@
 
 char VersionInfo[] = "RmSample";
 
-boolean rmTrg = false;
-
 boolean cntFlg = false;
 int count = 0;
+
 boolean ctrlFlg = true;
+
 int debounceCount = 0;
 boolean ledEmitFlg = false;
 
-void timerFire() {
-  rmTrg = true;
-  
-}
+unsigned long previousMillis = 0;
 
 void setup() {
   pinMode(LED_PIN, OUTPUT);
@@ -29,18 +24,19 @@ void setup() {
 
   RM_Initial((uint8_t*)VersionInfo, sizeof(VersionInfo));
   
-  MsTimer2::set(5, timerFire);
-  MsTimer2::start();
-  
   digitalWrite(LED_PIN, HIGH);
+
+  // Prevent following variables being compiled out
+  cntFlg = false;
+  ctrlFlg = true;
 }
 
 void loop() {
   
-  if( rmTrg == true )
-  {
-    rmTrg = false;
-
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= 5) {
+    previousMillis = currentMillis;
+    
     if(cntFlg== false)
     {
       count++;
@@ -81,8 +77,9 @@ void loop() {
     RM_Communiation();
     
     serialTxEvent();
-    
+
   }
+
 }
 
 void serialRxEvent() {
