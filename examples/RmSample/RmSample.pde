@@ -3,6 +3,9 @@
 #define LED_PIN 3
 #define SW_PIN 4
 
+#define INTERVAL_CNT 5
+#define RM_PASSWORD  0x0000FFFFU
+
 char VersionInfo[] = "RmSample";
 
 boolean cntFlg = false;
@@ -22,7 +25,7 @@ void setup() {
   // initialize serial:
   Serial.begin(9600);
 
-  RM_Initial((uint8_t*)VersionInfo, sizeof(VersionInfo));
+  RM_Initial((uint8_t*)VersionInfo, sizeof(VersionInfo), INTERVAL_CNT, RM_PASSWORD);
   
   digitalWrite(LED_PIN, HIGH);
 
@@ -34,7 +37,7 @@ void setup() {
 void loop() {
   
   unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= 5) {
+  if (currentMillis - previousMillis >= INTERVAL_CNT) {
     previousMillis = currentMillis;
     
     if(cntFlg== false)

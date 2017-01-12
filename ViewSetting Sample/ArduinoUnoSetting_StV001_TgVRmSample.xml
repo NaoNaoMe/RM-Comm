@@ -6,7 +6,7 @@
     <Size>2</Size>
     <Variable>count</Variable>
     <AddrLock>false</AddrLock>
-    <Address>0x008003eb</Address>
+    <Address>0x008003ec</Address>
     <Offset>0</Offset>
     <Name>Counter</Name>
     <Type>UsD</Type>
@@ -16,7 +16,7 @@
     <Size>1</Size>
     <Variable>cntFlg</Variable>
     <AddrLock>false</AddrLock>
-    <Address>0x008003ed</Address>
+    <Address>0x008003ee</Address>
     <Offset>0</Offset>
     <Name>Count Enable</Name>
     <Type>Hex</Type>
@@ -27,7 +27,7 @@
     <Size>1</Size>
     <Variable>cntFlg</Variable>
     <AddrLock>false</AddrLock>
-    <Address>0x008003ed</Address>
+    <Address>0x008003ee</Address>
     <Offset>0</Offset>
     <Name>Count Disable</Name>
     <Type>Hex</Type>
@@ -55,7 +55,7 @@
     <Size>2</Size>
     <Variable>debounceCount</Variable>
     <AddrLock>false</AddrLock>
-    <Address>0x008003e9</Address>
+    <Address>0x008003ea</Address>
     <Offset>0</Offset>
     <Name>Debounce Counter</Name>
     <Type>Dec</Type>
@@ -65,7 +65,7 @@
     <Size>1</Size>
     <Variable>ledEmitFlg</Variable>
     <AddrLock>false</AddrLock>
-    <Address>0x008003e8</Address>
+    <Address>0x008003e9</Address>
     <Offset>0</Offset>
     <Name>LED State</Name>
     <Type>Hex</Type>
