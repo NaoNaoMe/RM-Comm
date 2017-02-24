@@ -8,10 +8,10 @@
 
 char VersionInfo[] = "RmSample";
 
-boolean cntFlg = false;
+volatile boolean cntFlg = false;
 int count = 0;
 
-boolean ctrlFlg = true;
+volatile boolean ctrlFlg = true;
 
 int debounceCount = 0;
 boolean ledEmitFlg = false;
@@ -29,9 +29,6 @@ void setup() {
   
   digitalWrite(LED_PIN, HIGH);
 
-  // Prevent following variables being compiled out
-  cntFlg = false;
-  ctrlFlg = true;
 }
 
 void loop() {

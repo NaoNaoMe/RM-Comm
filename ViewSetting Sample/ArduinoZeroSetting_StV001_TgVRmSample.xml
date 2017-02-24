@@ -6,7 +6,7 @@
     <Size>4</Size>
     <Variable>count</Variable>
     <AddrLock>false</AddrLock>
-    <Address>0x20000138</Address>
+    <Address>0x20000130</Address>
     <Offset>0</Offset>
     <Name>Counter</Name>
     <Type>UsD</Type>
@@ -16,7 +16,7 @@
     <Size>1</Size>
     <Variable>cntFlg</Variable>
     <AddrLock>false</AddrLock>
-    <Address>0x2000012c</Address>
+    <Address>0x20000135</Address>
     <Offset>0</Offset>
     <Name>Count Enable</Name>
     <Type>Hex</Type>
@@ -27,7 +27,7 @@
     <Size>1</Size>
     <Variable>cntFlg</Variable>
     <AddrLock>false</AddrLock>
-    <Address>0x2000012c</Address>
+    <Address>0x20000135</Address>
     <Offset>0</Offset>
     <Name>Count Disable</Name>
     <Type>Hex</Type>
@@ -55,7 +55,7 @@
     <Size>4</Size>
     <Variable>debounceCount</Variable>
     <AddrLock>false</AddrLock>
-    <Address>0x20000128</Address>
+    <Address>0x2000012c</Address>
     <Offset>0</Offset>
     <Name>Debounce Counter</Name>
     <Type>Dec</Type>
